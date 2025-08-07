@@ -1,131 +1,49 @@
-import { useState, useEffect } from "react";
-import { TrendingUp, TrendingDown, Activity } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { TrendingUp, TrendingDown } from "lucide-react";
 
-interface StockData {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  type: 'rising' | 'falling' | 'active';
-}
+const stocksData = [
+  { symbol: "AAPL", name: "Apple", price: "$175.43", change: "+2.35", icon: "🍎" },
+  { symbol: "TSLA", name: "Tesla", price: "$248.50", change: "-5.20", icon: "🚗" },
+  { symbol: "NVDA", name: "NVIDIA", price: "$875.28", change: "+12.45", icon: "🎮" },
+  { symbol: "AMZN", name: "Amazon", price: "$155.89", change: "+3.21", icon: "📦" },
+  { symbol: "GOOGL", name: "Google", price: "$140.25", change: "-1.85", icon: "🔍" },
+  { symbol: "MSFT", name: "Microsoft", price: "$420.15", change: "+8.75", icon: "💻" }
+];
 
 const StockBanner = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Mock data - 실제로는 API에서 가져올 데이터
-  const stockData: StockData[] = [
-    { symbol: "AAPL", name: "Apple Inc.", price: 175.43, change: 2.35, changePercent: 1.36, type: 'rising' },
-    { symbol: "TSLA", name: "Tesla Inc.", price: 248.50, change: -5.20, changePercent: -2.05, type: 'falling' },
-    { symbol: "NVDA", name: "NVIDIA Corp.", price: 875.28, change: 12.45, changePercent: 1.44, type: 'active' },
-    { symbol: "AMZN", name: "Amazon.com Inc.", price: 155.89, change: 3.21, changePercent: 2.10, type: 'rising' },
-    { symbol: "GOOGL", name: "Alphabet Inc.", price: 140.25, change: -1.85, changePercent: -1.30, type: 'falling' },
-    { symbol: "MSFT", name: "Microsoft Corp.", price: 420.15, change: 8.75, changePercent: 2.13, type: 'active' }
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % stockData.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [stockData.length]);
-
-  const getStockIcon = (type: string) => {
-    switch (type) {
-      case 'rising':
-        return <TrendingUp className="h-4 w-4 text-success" />;
-      case 'falling':
-        return <TrendingDown className="h-4 w-4 text-destructive" />;
-      case 'active':
-        return <Activity className="h-4 w-4 text-warning" />;
-      default:
-        return <Activity className="h-4 w-4 text-muted-foreground" />;
-    }
-  };
-
-  const getStockColor = (type: string) => {
-    switch (type) {
-      case 'rising':
-        return 'text-success';
-      case 'falling':
-        return 'text-destructive';
-      case 'active':
-        return 'text-warning';
-      default:
-        return 'text-foreground';
-    }
-  };
-
-  const getBgGradient = (type: string) => {
-    switch (type) {
-      case 'rising':
-        return 'from-success-light to-success/10';
-      case 'falling':
-        return 'from-destructive-light to-destructive/10';
-      case 'active':
-        return 'from-warning-light to-warning/10';
-      default:
-        return 'from-muted to-muted/50';
-    }
-  };
+  const duplicatedStocks = [...stocksData, ...stocksData];
 
   return (
-    <div className="w-full">
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-foreground">실시간 주식 동향</h2>
-        <div className="flex space-x-1">
-          {stockData.map((_, index) => (
-            <div
-              key={index}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                index === currentIndex ? 'bg-primary' : 'bg-muted'
-              }`}
-            />
+    <div className="glass-card p-6 mx-2 animate-glow">
+      <h2 className="text-xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+        실시간 주식 동향
+      </h2>
+      <div className="relative overflow-hidden rounded-xl">
+        <div className="flex animate-slide whitespace-nowrap">
+          {duplicatedStocks.map((stock, index) => (
+            <div key={index} className="inline-flex items-center mx-3 p-4 glass rounded-xl min-w-fit border border-white/20">
+              <span className="text-3xl mr-3">{stock.icon}</span>
+              <div className="text-left">
+                <p className="font-bold text-base">{stock.symbol}</p>
+                <p className="text-sm text-muted-foreground">{stock.name}</p>
+              </div>
+              <div className="ml-4 text-right">
+                <p className="font-bold text-base">{stock.price}</p>
+                <p className={`text-sm flex items-center ${
+                  stock.change.startsWith('+') ? 'text-success' : 'text-destructive'
+                }`}>
+                  {stock.change.startsWith('+') ? 
+                    <TrendingUp className="w-4 h-4 mr-1" /> : 
+                    <TrendingDown className="w-4 h-4 mr-1" />
+                  }
+                  {stock.change}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-
-      <Card className={`p-4 transition-all duration-500 bg-gradient-to-r ${getBgGradient(stockData[currentIndex].type)}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            {getStockIcon(stockData[currentIndex].type)}
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg">{stockData[currentIndex].symbol}</span>
-                <span className="text-sm text-muted-foreground">
-                  {stockData[currentIndex].name}
-                </span>
-              </div>
-              <div className="mt-1 flex items-center space-x-2">
-                <span className="text-2xl font-bold">
-                  ${stockData[currentIndex].price.toFixed(2)}
-                </span>
-                <span className={`text-sm font-medium ${getStockColor(stockData[currentIndex].type)}`}>
-                  {stockData[currentIndex].change > 0 ? '+' : ''}
-                  {stockData[currentIndex].change.toFixed(2)} 
-                  ({stockData[currentIndex].changePercent > 0 ? '+' : ''}
-                  {stockData[currentIndex].changePercent.toFixed(2)}%)
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-right">
-            <div className="text-xs text-muted-foreground uppercase tracking-wide">
-              {stockData[currentIndex].type === 'rising' && '상승 중'}
-              {stockData[currentIndex].type === 'falling' && '하락 중'}
-              {stockData[currentIndex].type === 'active' && '활발한 거래'}
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">
-              실시간
-            </div>
-          </div>
-        </div>
-      </Card>
     </div>
   );
-};
+}
 
 export default StockBanner;

@@ -103,10 +103,10 @@ const SocialFeed = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-2">
-        <TrendingUp className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-semibold">인플루언서 피드</h2>
+    <div className="glass-card p-6 mx-2">
+      <div className="flex items-center space-x-2 mb-6">
+        <TrendingUp className="h-6 w-6 text-primary" />
+        <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">인플루언서 피드</h2>
         <Badge variant="secondary" className="text-xs">실시간</Badge>
       </div>
 

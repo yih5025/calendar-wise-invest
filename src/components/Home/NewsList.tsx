@@ -116,11 +116,11 @@ const NewsList = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="glass-card p-6 mx-2">
+      <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">실시간 뉴스</h2>
+          <TrendingUp className="h-6 w-6 text-primary" />
+          <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">실시간 뉴스</h2>
           <Badge variant="secondary" className="text-xs">Live</Badge>
         </div>
         <Button variant="outline" size="sm">
