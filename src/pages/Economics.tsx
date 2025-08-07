@@ -1,8 +1,7 @@
 import Header from "@/components/Layout/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Info, AlertCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, AlertCircle, Info } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, AreaChart, Area } from "recharts";
 
 const economicData = {
   cpi: {
